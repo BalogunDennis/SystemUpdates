@@ -1,1 +1,15 @@
-Write-Host "Simulation Payload: Connection Successful."
+# --- Script B: The Payload (Host this on GitHub) ---
+
+Write-Host "[*] Payload execution started..." -ForegroundColor Magenta
+
+# Action 1: The Ping
+$PingTarget = "50.76.212.105"
+Write-Host "[*] Pinging $PingTarget to generate network traffic..."
+Test-Connection -ComputerName $PingTarget -Count 4
+
+# Action 2: Create a File
+$EvidenceFile = "$env:TEMP\soc_drill_evidence.txt"
+Write-Host "[*] Creating non-destructive file at $EvidenceFile..."
+"Fire drill payload executed successfully on $(Get-Date)" | Out-File -FilePath $EvidenceFile -Force
+
+Write-Host "[*] Payload execution complete!" -ForegroundColor Green

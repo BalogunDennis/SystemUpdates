@@ -3,7 +3,7 @@
 Write-Host "[*] Payload execution started..." -ForegroundColor Magenta
 
 # Action 1: The Ping
-$PingTarget = "50.76.212.105"
+$PingTarget = "8.8.8.8"
 Write-Host "[*] Pinging $PingTarget to generate network traffic..."
 Test-Connection -ComputerName $PingTarget -Count 4
 

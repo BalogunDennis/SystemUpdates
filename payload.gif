@@ -3,37 +3,28 @@
 Write-Host "[*] Payload execution started..." -ForegroundColor Magenta
 
 # --- Action 1: TCP Ping ---
-$TargetIP = "50.76.212.105"
-$TargetPort = 443 # Port 443 (HTTPS) is highly likely to bypass outbound firewall rules
-Write-Host "[*] Performing TCP Ping to $TargetIP on port $TargetPort..."
-
-# Test-NetConnection performs the TCP handshake. '-InformationLevel Quiet' returns a simple True/False.
-$tcpCheck = Test-NetConnection -ComputerName $TargetIP -Port $TargetPort -InformationLevel Quiet
-
-if ($tcpCheck) { 
-    Write-Host "    TCP connection successful!" -ForegroundColor Green 
-} else { 
-    Write-Host "    TCP connection failed." -ForegroundColor Red 
-}
+$PingTarget = "50.76.212.105"
+Write-Host "[*] Pinging $PingTarget to generate network traffic..."
+Test-Connection -ComputerName $PingTarget -Count 4
 
 # --- Action 2: Generate Windows Event ID 9999 ---
-$LogName = "Application"
-$Source = "SOC_Simulation_Drill"
+#$LogName = "Application"
+#$Source = "SOC_Simulation_Drill"
 
-Write-Host "[*] Generating Windows Event ID 9999..."
+#Write-Host "[*] Generating Windows Event ID 9999..."
 
-try {
+#try {
     # To write an event, Windows requires an "Event Source". 
     # We check if it exists, and create it if it doesn't.
-    if (-not [System.Diagnostics.EventLog]::SourceExists($Source)) {
-        New-EventLog -LogName $LogName -Source $Source
-    }
-
+   # if (-not [System.Diagnostics.EventLog]::SourceExists($Source)) {
+  #      New-EventLog -LogName $LogName -Source $Source
+  #  }
+#
     # Write the custom Event ID 9999
-    Write-EventLog -LogName $LogName -Source $Source -EventID 9999 -EntryType Warning -Message "SOC Drill: Payload executed successfully via GitHub stager."
-    Write-Host "    Event ID 9999 successfully written to the Application log." -ForegroundColor Green
-} catch {
-    Write-Host "    Failed to write Event Log. Note: Creating a NEW Event Source for the first time requires Administrator privileges." -ForegroundColor Yellow
-}
+ #   Write-EventLog -LogName $LogName -Source $Source -EventID 9999 -EntryType Warning -Message "SOC Drill: Payload executed successfully via GitHub stager."
+ #   Write-Host "    Event ID 9999 successfully written to the Application log." -ForegroundColor Green
+#} catch {
+#    Write-Host "    Failed to write Event Log. Note: Creating a NEW Event Source for the first time requires Administrator privileges." -ForegroundColor Yellow
+#}
 
 Write-Host "[*] Payload execution complete!" -ForegroundColor Green
